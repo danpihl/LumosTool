@@ -29,7 +29,13 @@ std::string Builder::GetResourceBasePath() const {
 }
 
 std::string Builder::GetToolchainPath() const {
-    return GetResourceBasePath() + "/toolchains/gcc-arm-none-eabi-10.3-2021.10/bin";
+#if defined(__APPLE__)
+    return GetResourceBasePath() + "/toolchains/macos/gcc-arm-none-eabi-10.3-2021.10/bin";
+#elif defined(_WIN32)
+    return GetResourceBasePath() + "/toolchains/windows/gcc-arm-none-eabi-10.3-2021.10/bin";
+#else
+    return GetResourceBasePath() + "/toolchains/linux/gcc-arm-none-eabi-10.3-2021.10/bin";
+#endif
 }
 
 std::string Builder::GetPlatformPath(const std::string& platform) const {

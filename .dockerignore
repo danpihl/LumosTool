@@ -4,8 +4,10 @@ release/
 third_party/yaml-cpp/build/
 third_party/googletest/build/
 
-# Pre-built platform toolchains (Mac/Windows binaries, not needed in Docker)
-src/toolchains/gcc-arm-none-eabi*/
+# Pre-built platform toolchains (host binaries, not needed inside Docker)
+src/toolchains/macos/
+src/toolchains/windows/
+src/toolchains/linux/
 src/toolchains/*_original/
 
 # Git

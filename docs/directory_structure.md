@@ -79,12 +79,12 @@ std::string GetResourceBasePath() const {
 ### Path Resolution
 
 ```cpp
-// Development:
-GetToolchainPath() → "/path/to/LumosTool/src/toolchains/gcc-arm-none-eabi-10.3-2021.10/bin"
+// Development (macOS):
+GetToolchainPath() → "/path/to/LumosTool/src/toolchains/macos/gcc-arm-none-eabi-10.3-2021.10/bin"
 GetBoardPath("LumosBrain") → "/path/to/LumosTool/src/boards/lumos_brain"
 
-// Release:
-GetToolchainPath() → "/usr/local/share/lumos/toolchains/gcc-arm-none-eabi-10.3-2021.10/bin"
+// Release (macOS):
+GetToolchainPath() → "/usr/local/share/lumos/toolchains/macos/gcc-arm-none-eabi-10.3-2021.10/bin"
 GetBoardPath("LumosBrain") → "/usr/local/share/lumos/boards/lumos_brain"
 ```
 

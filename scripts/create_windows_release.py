@@ -16,18 +16,12 @@ import sys
 import shutil
 import subprocess
 import platform
-import urllib.request
-import zipfile
 from pathlib import Path
 
 # Configuration
 VERSION = "1.0.0"
 ARM_TOOLCHAIN_VERSION = "10.3-2021.10"
 ARM_TOOLCHAIN_NAME = f"gcc-arm-none-eabi-{ARM_TOOLCHAIN_VERSION}"
-ARM_TOOLCHAIN_WIN_URL = (
-    f"https://developer.arm.com/-/media/Files/downloads/gnu-rm"
-    f"/{ARM_TOOLCHAIN_VERSION}/{ARM_TOOLCHAIN_NAME}-win32.zip"
-)
 PROJECT_ROOT = Path(__file__).parent.parent.absolute()
 RELEASE_DIR = PROJECT_ROOT / "release"
 PACKAGE_NAME = f"lumos-windows-{VERSION}"
@@ -40,6 +34,7 @@ DOCKER_FILE = PROJECT_ROOT / "docker" / "Dockerfile.windows"
 RESOURCES = {
     "src/boards": "boards",
     "src/toolchains/platform": "toolchains/platform",
+    f"src/toolchains/windows/{ARM_TOOLCHAIN_NAME}": f"toolchains/windows/{ARM_TOOLCHAIN_NAME}",
 }
 
 
@@ -163,33 +158,6 @@ def create_package_structure():
     return bin_dir, share_dir
 
 
-def download_arm_toolchain(share_dir):
-    print_step("Downloading ARM GCC Toolchain (Windows)")
-
-    toolchain_dir = share_dir / "toolchains"
-    toolchain_dir.mkdir(parents=True, exist_ok=True)
-
-    zip_path = toolchain_dir / f"{ARM_TOOLCHAIN_NAME}-win32.zip"
-
-    print(f"Downloading {ARM_TOOLCHAIN_WIN_URL} ...")
-
-    def progress(count, block_size, total_size):
-        mb_done = count * block_size / (1024 * 1024)
-        mb_total = total_size / (1024 * 1024)
-        print(f"  {mb_done:.1f} / {mb_total:.1f} MB\r", end="", flush=True)
-
-    urllib.request.urlretrieve(ARM_TOOLCHAIN_WIN_URL, zip_path, reporthook=progress)
-    print()
-
-    print(f"Extracting {zip_path.name} ...")
-    with zipfile.ZipFile(zip_path, "r") as zf:
-        zf.extractall(toolchain_dir)
-    zip_path.unlink()
-
-    size_mb = sum(
-        f.stat().st_size for f in (toolchain_dir / ARM_TOOLCHAIN_NAME).rglob("*") if f.is_file()
-    ) / (1024 * 1024)
-    print(f"✓ ARM toolchain bundled: {ARM_TOOLCHAIN_NAME} ({size_mb:.0f} MB)")
 
 
 def copy_resources(share_dir):
@@ -404,7 +372,6 @@ def main():
         bin_dir, share_dir = create_package_structure()
 
         extract_binary(bin_dir)
-        download_arm_toolchain(share_dir)
         copy_resources(share_dir)
         create_install_script()
         create_readme()

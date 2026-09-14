@@ -36,7 +36,7 @@ EXECUTABLES = [
 # Format: "source_path": "destination_path_in_share"
 RESOURCES = {
     "src/boards": "boards",  # Flatten: no src/ prefix in release
-    "src/toolchains/gcc-arm-none-eabi-10.3-2021.10": "toolchains/gcc-arm-none-eabi-10.3-2021.10",
+    "src/toolchains/macos/gcc-arm-none-eabi-10.3-2021.10": "toolchains/macos/gcc-arm-none-eabi-10.3-2021.10",
     "src/toolchains/platform": "toolchains/platform"
 }
 

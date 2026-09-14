@@ -163,7 +163,7 @@ platform/
 
 Uses ARM GCC toolchain located at:
 ```
-src/toolchains/gcc-arm-none-eabi-10.3-2021.10/
+src/toolchains/macos/gcc-arm-none-eabi-10.3-2021.10/
 ```
 
 Compiler binaries:
